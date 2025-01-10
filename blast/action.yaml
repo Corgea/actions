@@ -1,0 +1,56 @@
+name: 'Corgea Blast Scan'
+description: 'Scan your code with Corgea Blast'
+inputs:
+  token:
+    description: 'Corgea API token'
+    required: true
+  fail-on:
+    description: 'Fail on a specific severity level (CR, HI, ME, LO)'
+    required: false
+  fail:
+    description: 'Fail based on blocking rules defined in web app'
+    required: false
+    default: 'false'
+  version:
+    description: 'Version of Corgea CLI to install'
+    required: false
+    default: 'latest'
+  project-path:
+    description: 'Path to the project to scan (useful for monorepos)'
+    required: false
+    default: '.'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+        
+    - name: Install Corgea CLI
+      shell: bash
+      run: |
+        if [ "${{ inputs.version }}" = "latest" ]; then
+          pip install corgea-cli
+        else
+          pip install corgea-cli==${{ inputs.version }}
+        fi
+      
+    - name: Authenticate with Corgea
+      shell: bash  
+      run: corgea login ${{ inputs.token }}
+
+    - name: Run Blast scan
+      shell: bash
+      working-directory: ${{ inputs.project-path }}
+      run: |
+        if [ -n "${{ inputs.fail-on }}" ]; then
+          corgea scan blast --fail-on ${{ inputs.fail-on }}
+        elif [ "${{ inputs.fail }}" = "true" ]; then
+          corgea scan blast --fail
+        else
+          corgea scan blast
+        fi
+
+
