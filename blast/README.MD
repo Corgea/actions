@@ -5,6 +5,7 @@ This action runs Corgea Blast to scan your code for security vulnerabilities and
 ## Inputs
 
 - `token` (required): Your Corgea API token
+- `url` (optional): Corgea API URL (for on-premises deployments)
 - `fail-on` (optional): Fail the action on a specific severity level (CR, HI, ME, LO)
 - `fail` (optional): Fail based on blocking rules defined in web app (default: false)
 - `version` (optional): Version of Corgea CLI to install (default: latest)
