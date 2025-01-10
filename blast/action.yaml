@@ -19,6 +19,10 @@ inputs:
     description: 'Path to the project to scan (useful for monorepos)'
     required: false
     default: '.'
+  url:
+    description: 'Corgea API URL'
+    required: false
+    default: 'https://www.corgea.app'
 
 runs:
   using: "composite"
@@ -37,9 +41,11 @@ runs:
           pip install corgea-cli==${{ inputs.version }}
         fi
       
-    - name: Authenticate with Corgea
-      shell: bash  
-      run: corgea login ${{ inputs.token }}
+    - name: Set Corgea environment variables
+      shell: bash
+      run: |
+        echo "CORGEA_TOKEN=${{ inputs.token }}" >> $GITHUB_ENV
+        echo "CORGEA_URL=${{ inputs.url }}" >> $GITHUB_ENV
 
     - name: Run Blast scan
       shell: bash
@@ -52,5 +58,3 @@ runs:
         else
           corgea scan blast
         fi
-
-
