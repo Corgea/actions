@@ -13,7 +13,7 @@ This action uses our AI-powered security scanner "Blast" to detect vulnerabiliti
 - Flexible failure conditions
 - Support for monorepos
 
-Check out the [Blast documentation](./blast) to get started with securing your codebase!
+Check out the [Blast action docs](./blast) to get started with securing your codebase!
 
 ## Coming Soon
 
